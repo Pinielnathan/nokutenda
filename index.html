@@ -123,6 +123,10 @@ main,footer{position:relative;z-index:1}
 .envelope.open .env-seal{opacity:0;transform:translate(-50%,-50%) scale(1.4)}
 .envelope.open .env-letter{transform:translateY(-62%)}
 @keyframes float{50%{transform:translateY(-8px)}}
+.countdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,3vw,22px);width:min(420px,100%);margin-top:4px}
+.countdown div{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 4px 12px;border-top:1px solid var(--line)}
+.countdown span{font:500 clamp(2rem,9vw,3rem)/1 var(--display);color:var(--bright);font-variant-numeric:lining-nums tabular-nums}
+.countdown small{font:500 .64rem/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 
 /* ---------- rewind ---------- */
 .rewind{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,2.6vh,26px);padding:24px 16px;text-align:center;overflow:hidden;background:radial-gradient(110% 85% at 50% 42%,var(--deep),var(--night) 72%);opacity:0;transition:opacity .5s ease}
@@ -171,7 +175,7 @@ main,footer{position:relative;z-index:1}
 .name-first{display:block;padding:0 .14em .08em;font:italic 500 clamp(3.3rem,15vw,11rem)/.98 var(--display);letter-spacing:-.02em;background:linear-gradient(100deg,var(--gold-soft) 0%,var(--gold) 28%,var(--rose) 50%,var(--gold) 72%,var(--gold-soft) 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
 .name-last{display:block;margin-top:.5rem;padding-left:.7em;font:500 clamp(.78rem,2.2vw,1rem)/1 var(--mono);letter-spacing:.7em;text-transform:uppercase;color:var(--mist)}
 .hero-line{margin:12px 0 0;font:italic 400 clamp(1.5rem,4.8vw,2.5rem)/1.2 var(--display);color:var(--bright)}
-.hero-late{margin:0;font-size:.98rem;color:var(--dim);max-width:34ch}
+.hero-sub{margin:0;font-size:.98rem;color:var(--dim);max-width:34ch}
 .scroll-cue{margin-top:clamp(18px,5vh,48px);display:flex;flex-direction:column;align-items:center;gap:10px;font:500 .7rem/1 var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:8px}
 .scroll-cue i{display:block;width:1px;height:46px;background:linear-gradient(var(--gold),transparent);transform-origin:top;animation:drip 2.2s ease-in-out infinite}
 @keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
@@ -298,7 +302,6 @@ main,footer{position:relative;z-index:1}
 .letter .letter-date{margin-bottom:22px;text-align:right;font:500 .72rem/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--paper-dim)}
 .letter .letter-hello{margin-bottom:.4em;font:400 clamp(2.4rem,7vw,3.3rem)/1.1 var(--script)}
 .letter .letter-sign{margin:1.6em 0 0;font-style:italic}
-.letter .letter-love{margin:1.4em 0 0;font:italic 500 clamp(1.35rem,3.6vw,1.7rem)/1.4 var(--display);color:var(--wax)}
 .signature{display:block;margin-top:.1em;font:400 clamp(2.4rem,7vw,3.2rem)/1.1 var(--script);font-style:normal;color:var(--sapphire-deep)}
 .letter-seal{position:absolute;right:clamp(18px,5vw,44px);bottom:-28px;width:66px;height:66px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#d0485f,var(--wax) 55%,#6e1427);font:italic 600 1.6rem/1 var(--display);color:rgba(255,224,224,.8);box-shadow:0 6px 14px rgba(0,0,0,.35)}
 
@@ -352,9 +355,15 @@ main,footer{position:relative;z-index:1}
     <div class="env-seal">N</div>
   </div>
   <p class="gate-to">For Nokutenda</p>
-  <p class="gate-note">A little something for your birthday.</p>
+  <p class="gate-note" id="gate-note">A little something for your birthday.</p>
+  <div class="countdown" id="countdown" hidden role="timer" aria-live="off">
+    <div><span id="cd-d">00</span><small>days</small></div>
+    <div><span id="cd-h">00</span><small>hours</small></div>
+    <div><span id="cd-m">00</span><small>minutes</small></div>
+    <div><span id="cd-s">00</span><small>seconds</small></div>
+  </div>
   <button class="btn btn-gold" id="open" type="button">Open it</button>
-  <p class="gate-hint">Turn your sound on</p>
+  <p class="gate-hint" id="gate-hint">Turn your sound on</p>
 </div>
 
 <!-- Rewind sequence -->
@@ -392,7 +401,7 @@ main,footer{position:relative;z-index:1}
       <span class="name-first">Nokutenda</span>
     </h1>
     <p class="hero-line hero-a d3">Happy 18th birthday.</p>
-    <p class="hero-late hero-a d4">Eighteen looks good on you.</p>
+    <p class="hero-sub hero-a d4">Eighteen looks good on you.</p>
     <a class="scroll-cue hero-a d5" href="#meaning">Scroll<i></i></a>
   </header>
 
@@ -561,7 +570,7 @@ main,footer{position:relative;z-index:1}
       <p>Eighteen years ago, on a Tuesday under a new moon, the world got you. Since then you've travelled almost seventeen billion kilometres around the Sun, and somewhere along the way you found me. Your name says exactly how I feel about that: <em>nokutenda</em>, with thanks.</p>
       <p>You are kind in a way that makes people feel safe. You're beautiful in ways you don't even notice, and stronger than you give yourself credit for. I hope eighteen is the year you finally see yourself the way I see you.</p>
       <p>Whatever this next chapter brings, I'll be right there cheering you on.</p>
-      <p class="letter-love">I love you, gonzo rangu.</p>
+      <p>I love you, gonzo rangu.</p>
       <p class="letter-sign">Yours,<span class="signature">Bete</span></p>
       <div class="letter-seal" aria-hidden="true">N</div>
     </article>
@@ -593,6 +602,11 @@ const tok = n => css.getPropertyValue(n).trim();
 const BIRTH_MS = Date.UTC(2008, 9, 27, 22, 0, 0); // midnight, 28 Oct 2008 (UTC+2)
 const BORN = new Date(2008, 9, 28);
 const BDAY = new Date(2026, 9, 28);
+const today = new Date(); today.setHours(0, 0, 0, 0);
+const daysLate = Math.max(0, Math.round((today - BDAY) / 864e5)); // opened after the day: rewind to it first
+const ONES = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+const TENS = ['','','twenty','thirty'];
+const words = n => n < 20 ? ONES[n] : n < 40 ? TENS[Math.floor(n / 10)] + (n % 10 ? '-' + ONES[n % 10] : '') : String(n);
 const fmt = (d, o) => d.toLocaleDateString('en-GB', o);
 
 $('#born-weekday').textContent = fmt(BORN, { weekday: 'long' });
@@ -926,48 +940,64 @@ function showRewind() {
   const hands = { h: (now.getHours() % 12) * 30 + now.getMinutes() * .5, m: now.getMinutes() * 6 };
   handH.setAttribute('transform', `rotate(${hands.h} 100 100)`);
   handM.setAttribute('transform', `rotate(${hands.m} 100 100)`);
-  tapeMode(false); showDate(BDAY); rwTc.textContent = timecode(LIFE_SEC);
+  tapeMode(false); showDate(daysLate > 0 ? today : BDAY); rwTc.textContent = timecode(LIFE_SEC + daysLate * 86400);
   return hands;
 }
 function arrive() {
   rw.classList.remove('rolling', 'arrived'); void rw.offsetWidth;
   rw.classList.add('arrived'); Sound.chime();
 }
-// roll the 28th of October from one year to another, the clock spinning the same way
-function roll(hands, from, to, dur) {
-  const dir = Math.sign(to - from), span = Math.abs(to - from);
+// roll through `steps` dates (dateAt(k), k = 0..steps), the clock spinning the same way; tcAt(e) feeds the tape counter
+function roll(hands, steps, back, dateAt, tcAt, dur) {
+  const dir = back ? -1 : 1, turns = Math.min(steps, 18);
   const h0 = hands.h, m0 = hands.m;
   rw.classList.remove('arrived'); rw.classList.add('rolling');
   Sound.whoosh(dur / 1000 + .3);
   return new Promise(done => {
-    const t0 = performance.now(); let lastY = from;
+    const t0 = performance.now(); let lastK = 0;
     (function step(now) {
       const t = Math.min(1, (now - t0) / dur);
       const e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      const y = Math.round(from + (to - from) * e);
-      if (y !== lastY) { lastY = y; showDate(new Date(y, 9, 28)); Sound.tick(); }
-      hands.m = m0 + dir * e * 360 * span * 2; hands.h = h0 + dir * e * 360 * span / 6;
+      const k = Math.round(e * steps);
+      if (k !== lastK) { lastK = k; showDate(dateAt(k)); Sound.tick(); }
+      hands.m = m0 + dir * e * 360 * turns * 2; hands.h = h0 + dir * e * 360 * turns / 6;
       handM.setAttribute('transform', `rotate(${hands.m} 100 100)`);
       handH.setAttribute('transform', `rotate(${hands.h} 100 100)`);
-      rwTc.textContent = timecode((dir < 0 ? 1 - e : e) * LIFE_SEC);
+      rwTc.textContent = timecode(tcAt(e));
       if (t < 1) requestAnimationFrame(step); else done();
     })(t0);
   });
 }
-async function runRewind(hands, beforeFade) {
+async function runRewind(hands, beforeFade, replay) {
   const day = d => fmt(d, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  caption(`${day(BDAY)}. Eighteen years ago tonight, something wonderful happened.`);
-  await wait(reduced ? 1200 : 2600);
-  caption("Let's go back and see.");
-  await wait(reduced ? 300 : 800);
-  await roll(hands, BDAY.getFullYear(), BORN.getFullYear(), reduced ? 500 : 3400);
+  const hello = replay ? '' : waitedHere ? 'You waited for it.' : waitedBefore ? 'You came back.' : '';
+  if (hello) { caption(hello); await wait(reduced ? 900 : 1900); }
+  if (daysLate > 0) {
+    caption(`Today is ${day(today)}. Your birthday was ${daysLate === 1 ? 'yesterday' : words(daysLate) + ' days ago'}.`);
+    await wait(reduced ? 1200 : 2800);
+    caption("You're not missing it. Rewinding.");
+    await wait(reduced ? 300 : 800);
+    await roll(hands, daysLate, true, k => { const d = new Date(today); d.setDate(d.getDate() - k); return d; },
+      e => LIFE_SEC + (1 - e) * daysLate * 86400, reduced ? 500 : Math.min(4000, 1800 + daysLate * 120));
+    arrive();
+    caption(`There. ${day(BDAY)}. Right on time.`);
+    await wait(reduced ? 1200 : 2600);
+    caption('And eighteen years before that…');
+    await wait(reduced ? 300 : 900);
+  } else {
+    caption(`${day(BDAY)}. Eighteen years ago tonight, something wonderful happened.`);
+    await wait(reduced ? 1200 : 2800);
+    caption("Let's go back and see.");
+    await wait(reduced ? 300 : 800);
+  }
+  await roll(hands, 18, true, k => new Date(2026 - k, 9, 28), e => (1 - e) * LIFE_SEC, reduced ? 500 : 3400);
   arrive();
   caption(`${day(BORN)}. A new moon, and then you.`);
   await wait(reduced ? 1400 : 3000);
   tapeMode(true);
   caption('Eighteen trips around the Sun later…');
   await wait(reduced ? 300 : 600);
-  await roll(hands, BORN.getFullYear(), BDAY.getFullYear(), reduced ? 500 : 2400);
+  await roll(hands, 18, false, k => new Date(2008 + k, 9, 28), e => e * LIFE_SEC, reduced ? 500 : 2400);
   arrive();
   caption(`${day(BDAY)}. Happy birthday, Nokutenda.`);
   await wait(reduced ? 1200 : 2400);
@@ -980,9 +1010,42 @@ async function runRewind(hands, beforeFade) {
 
 /* ---------------- opening ---------------- */
 const gate = $('#gate');
+const store = {
+  get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+// #me marks your own phone: you skip the countdown; #countdown previews what everyone else sees before the day
+if (location.hash === '#me') store.set('owner', '1');
+const owner = store.get('owner') === '1', preview = location.hash === '#countdown';
+const waitedBefore = !preview && store.get('waited') === '1';
+let waitedHere = false;
 function opened() { body.classList.remove('locked'); body.classList.add('opened'); }
 if (location.hash === '#skip') { gate.hidden = true; opened(); }
 else body.classList.add('locked');
+
+(function countdown() {
+  if (!preview && (owner || Date.now() >= BDAY)) return;
+  const box = $('#countdown'), openBtn = $('#open'), note = $('#gate-note'), hint = $('#gate-hint');
+  const els = ['d', 'h', 'm', 's'].map(k => $('#cd-' + k));
+  if (!preview) store.set('waited', '1');
+  box.hidden = false; openBtn.hidden = true;
+  note.textContent = 'Sealed until your birthday. It opens on its own at midnight.';
+  hint.textContent = fmt(BDAY, { weekday: 'long', day: 'numeric', month: 'long' });
+  const timer = setInterval(tickCd, 1000);
+  function tickCd() {
+    const left = Math.max(0, Math.ceil((BDAY - Date.now()) / 1000));
+    const v = [Math.floor(left / 86400), Math.floor(left % 86400 / 3600), Math.floor(left % 3600 / 60), left % 60];
+    els.forEach((el, i) => { el.textContent = pad(v[i]); });
+    box.setAttribute('aria-label', `${v[0]} days, ${v[1]} hours, ${v[2]} minutes until your birthday`);
+    if (left > 0) return;
+    clearInterval(timer);
+    waitedHere = !preview;
+    box.hidden = true; openBtn.hidden = false;
+    note.textContent = "It's your birthday. It's time.";
+    hint.textContent = 'Turn your sound on';
+  }
+  tickCd();
+})();
 
 $('#open').addEventListener('click', async e => {
   e.currentTarget.disabled = true;
@@ -1004,7 +1067,7 @@ $('#replay').addEventListener('click', async e => {
   const btn = e.currentTarget; btn.disabled = true;
   body.classList.remove('opened'); body.classList.add('locked');
   const hands = showRewind();
-  await runRewind(hands, () => { window.scrollTo(0, 0); opened(); });
+  await runRewind(hands, () => { window.scrollTo(0, 0); opened(); }, true);
   FX.party(120);
   btn.disabled = false;
 });
@@ -1172,7 +1235,7 @@ const WISHES = [
   const TOTAL = 18;
   // drips on the ganache
   const drips = $('#drips');
-  let ds = 1977;
+  let ds = 2810;
   const dr = () => (ds = (ds * 9301 + 49297) % 233280) / 233280;
   for (let i = 0; i < 16; i++) {
     const d = document.createElement('span'); d.className = 'drip';
