@@ -137,7 +137,8 @@ main,footer{position:relative;z-index:1}
 @keyframes flash{0%{opacity:.85}100%{opacity:0}}
 .rw-top{position:absolute;top:calc(env(safe-area-inset-top,0px) + 18px);left:18px;right:18px;display:flex;justify-content:space-between;gap:12px;font:500 .78rem/1 var(--mono);letter-spacing:.18em;color:var(--dim)}
 .rw-rec{display:inline-flex;align-items:center;gap:.6em}
-.rw-rec svg{width:18px;height:12px;fill:currentColor}
+.rw-rec svg{width:18px;height:12px;fill:currentColor;transition:transform .3s}
+.rw-rec.ff svg{transform:scaleX(-1)}
 .rolling .rw-rec{color:var(--rose);animation:blink .9s steps(2) infinite}
 .arrived .rw-rec{color:var(--gold)}
 @keyframes blink{50%{opacity:.25}}
@@ -155,14 +156,15 @@ main,footer{position:relative;z-index:1}
 .rolling .rw-day{text-shadow:-4px 0 var(--rose),4px 0 var(--sapphire);animation:jitter .12s steps(2) infinite}
 .arrived .rw-day{color:var(--gold);text-shadow:0 0 50px var(--gold-glow)}
 @keyframes jitter{50%{transform:translate(1px,-1px)}}
-.rw-my{font:italic 400 clamp(1.3rem,4.6vw,2rem)/1.1 var(--display);color:var(--mist)}
+.rw-my{font:italic 400 clamp(1.3rem,4.6vw,2rem)/1.1 var(--display);color:var(--mist);font-variant-numeric:lining-nums tabular-nums;transition:color .4s}
+.rolling .rw-my{color:var(--bright)}
 .rw-caption{margin:0;min-height:2.9em;max-width:30ch;font:400 clamp(1rem,3.6vw,1.22rem)/1.45 var(--body);color:var(--bright);opacity:0;transform:translateY(8px)}
 .rw-caption.show{opacity:1;transform:none;transition:opacity .5s,transform .5s}
 
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,2.4vh,22px);padding:96px 20px 80px;text-align:center;overflow:hidden}
-.hero-21{position:absolute;inset:0;display:grid;place-items:center;font:400 clamp(20rem,72vw,46rem)/1 var(--display);color:transparent;-webkit-text-stroke:1px rgba(236,198,126,.15);pointer-events:none;user-select:none;z-index:0}
-.hero>*:not(.hero-21){position:relative;z-index:1}
+.hero-18{position:absolute;inset:0;display:grid;place-items:center;font:400 clamp(20rem,72vw,46rem)/1 var(--display);color:transparent;-webkit-text-stroke:1px rgba(236,198,126,.15);pointer-events:none;user-select:none;z-index:0}
+.hero>*:not(.hero-18){position:relative;z-index:1}
 .eyebrow{display:flex;align-items:center;gap:14px;margin:0;font:500 clamp(.68rem,2.2vw,.8rem)/1 var(--mono);letter-spacing:.24em;color:var(--gold)}
 .eyebrow i{display:block;width:clamp(28px,8vw,64px);height:1px;background:var(--line)}
 .name{margin:0;display:flex;flex-direction:column;align-items:center}
@@ -177,7 +179,7 @@ main,footer{position:relative;z-index:1}
 .opened .hero-a{animation:rise 1.2s cubic-bezier(.2,.7,.2,1) both}
 .opened .d1{animation-delay:.15s}.opened .d2{animation-delay:1.1s}.opened .d3{animation-delay:1.5s}.opened .d4{animation-delay:1.9s}.opened .d5{animation-delay:2.4s}
 .opened .name-first{animation:unveil 2s cubic-bezier(.2,.7,.1,1) .35s both,shimmer 8s linear 2.4s infinite}
-.opened .hero-21{animation:loom 3.2s cubic-bezier(.2,.7,.1,1) both}
+.opened .hero-18{animation:loom 3.2s cubic-bezier(.2,.7,.1,1) both}
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes unveil{from{opacity:0;clip-path:inset(-10% 110% -10% -10%);letter-spacing:.14em}25%{opacity:1}to{opacity:1;clip-path:inset(-10% -10% -10% -10%);letter-spacing:-.02em}}
 @keyframes shimmer{to{background-position:-220% 0}}
@@ -360,8 +362,8 @@ main,footer{position:relative;z-index:1}
   <div class="rw-scan"></div>
   <div class="rw-band"></div>
   <div class="rw-top">
-    <span class="rw-rec"><svg viewBox="0 0 18 12" aria-hidden="true"><path d="M9 0 L0 6 L9 12 Z M18 0 L9 6 L18 12 Z"/></svg>REW</span>
-    <span class="rw-tc" id="rw-tc">00d 00:00:00</span>
+    <span class="rw-rec" id="rw-rec"><svg viewBox="0 0 18 12" aria-hidden="true"><path d="M9 0 L0 6 L9 12 Z M18 0 L9 6 L18 12 Z"/></svg><span id="rw-mode">REW</span></span>
+    <span class="rw-tc" id="rw-tc">0000d 00:00:00</span>
   </div>
   <svg class="rw-clock" viewBox="0 0 200 200" aria-hidden="true">
     <circle class="rw-face" cx="100" cy="100" r="92"/>
@@ -384,13 +386,13 @@ main,footer{position:relative;z-index:1}
 <main>
   <!-- Hero -->
   <header class="hero" id="top">
-    <div class="hero-21" aria-hidden="true">18</div>
+    <div class="hero-18" aria-hidden="true">18</div>
     <p class="eyebrow hero-a d1"><span>28.10.2008</span><i></i><span>28.10.2026</span></p>
     <h1 class="name">
       <span class="name-first">Nokutenda</span>
     </h1>
     <p class="hero-line hero-a d3">Happy 18th birthday.</p>
-    <p class="hero-late hero-a d4" id="hero-late">Eighteen looks good on you.</p>
+    <p class="hero-late hero-a d4">Eighteen looks good on you.</p>
     <a class="scroll-cue hero-a d5" href="#meaning">Scroll<i></i></a>
   </header>
 
@@ -407,7 +409,7 @@ main,footer{position:relative;z-index:1}
     </div>
     <div class="meaning-copy rv">
       <p class="big">Your name means <em>with thanks</em>.</p>
-      <p id="late-copy">Which is exactly how I feel about you. Every day I get to spend with you, I'm thankful.</p>
+      <p>Which is exactly how I feel about you. Every day I get to spend with you, I'm thankful.</p>
       <p><em>Kutenda</em> also means to believe. So your name carries both: gratitude, and faith. I'm thankful for you, and I believe in you. Today, and every day after it.</p>
     </div>
   </section>
@@ -589,17 +591,12 @@ const tok = n => css.getPropertyValue(n).trim();
 
 /* ---------------- dates ---------------- */
 const BIRTH_MS = Date.UTC(2008, 9, 27, 22, 0, 0); // midnight, 28 Oct 2008 (UTC+2)
+const BORN = new Date(2008, 9, 28);
 const BDAY = new Date(2026, 9, 28);
-const today = new Date(); today.setHours(0, 0, 0, 0);
-const daysLate = 0; // always celebrated as if it is opened on the day
-const ONES = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
-const TENS = ['','','twenty','thirty'];
-const words = n => n < 20 ? ONES[n] : n < 40 ? TENS[Math.floor(n / 10)] + (n % 10 ? '-' + ONES[n % 10] : '') : String(n);
-const lateText = daysLate === 1 ? 'one day' : words(daysLate) + ' days';
 const fmt = (d, o) => d.toLocaleDateString('en-GB', o);
 
-$('#born-weekday').textContent = fmt(new Date(2008, 9, 28), { weekday: 'long' });
-$('#letter-date').textContent = fmt(daysLate > 0 ? today : BDAY, { day: 'numeric', month: 'long', year: 'numeric' });
+$('#born-weekday').textContent = fmt(BORN, { weekday: 'long' });
+$('#letter-date').textContent = fmt(BDAY, { day: 'numeric', month: 'long', year: 'numeric' });
 
 /* ---------------- sound ---------------- */
 const Sound = (() => {
@@ -912,58 +909,68 @@ function caption(text) {
   rwCap.classList.remove('show'); void rwCap.offsetWidth;
   rwCap.textContent = text; rwCap.classList.add('show');
 }
+// tape counter: how much of her life sits between the date on screen and the night she was born
+const LIFE_SEC = (BDAY - BORN) / 1000;
 function timecode(sec) {
   sec = Math.max(0, Math.round(sec));
   const d = Math.floor(sec / 86400), h = Math.floor(sec % 86400 / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
-  return `${pad(d)}d ${pad(h)}:${pad(m)}:${pad(s)}`;
+  return `${String(d).padStart(4, '0')}d ${pad(h)}:${pad(m)}:${pad(s)}`;
 }
+const rwRec = $('#rw-rec'), rwMode = $('#rw-mode');
+function tapeMode(ff) { rwRec.classList.toggle('ff', ff); rwMode.textContent = ff ? 'FF' : 'REW'; }
 function showRewind() {
   rw.hidden = false; void rw.offsetWidth;
   rw.classList.remove('out', 'arrived', 'rolling'); rw.classList.add('on');
   rwCap.classList.remove('show'); rwCap.textContent = '';
   const now = new Date();
-  const h0 = (now.getHours() % 12) * 30 + now.getMinutes() * .5, m0 = now.getMinutes() * 6;
-  handH.setAttribute('transform', `rotate(${h0} 100 100)`);
-  handM.setAttribute('transform', `rotate(${m0} 100 100)`);
-  showDate(BDAY); rwTc.textContent = timecode(0);
-  return { h0, m0 };
+  const hands = { h: (now.getHours() % 12) * 30 + now.getMinutes() * .5, m: now.getMinutes() * 6 };
+  handH.setAttribute('transform', `rotate(${hands.h} 100 100)`);
+  handM.setAttribute('transform', `rotate(${hands.m} 100 100)`);
+  tapeMode(false); showDate(BDAY); rwTc.textContent = timecode(LIFE_SEC);
+  return hands;
+}
+function arrive() {
+  rw.classList.remove('rolling', 'arrived'); void rw.offsetWidth;
+  rw.classList.add('arrived'); Sound.chime();
+}
+// roll the 28th of October from one year to another, the clock spinning the same way
+function roll(hands, from, to, dur) {
+  const dir = Math.sign(to - from), span = Math.abs(to - from);
+  const h0 = hands.h, m0 = hands.m;
+  rw.classList.remove('arrived'); rw.classList.add('rolling');
+  Sound.whoosh(dur / 1000 + .3);
+  return new Promise(done => {
+    const t0 = performance.now(); let lastY = from;
+    (function step(now) {
+      const t = Math.min(1, (now - t0) / dur);
+      const e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const y = Math.round(from + (to - from) * e);
+      if (y !== lastY) { lastY = y; showDate(new Date(y, 9, 28)); Sound.tick(); }
+      hands.m = m0 + dir * e * 360 * span * 2; hands.h = h0 + dir * e * 360 * span / 6;
+      handM.setAttribute('transform', `rotate(${hands.m} 100 100)`);
+      handH.setAttribute('transform', `rotate(${hands.h} 100 100)`);
+      rwTc.textContent = timecode((dir < 0 ? 1 - e : e) * LIFE_SEC);
+      if (t < 1) requestAnimationFrame(step); else done();
+    })(t0);
+  });
 }
 async function runRewind(hands, beforeFade) {
-  if (daysLate === 0) {
-    showDate(BDAY); caption(`${fmt(BDAY, { weekday: 'long', day: 'numeric', month: 'long' })}. Your day is here.`);
-    rw.classList.add('arrived'); Sound.chime();
-    await wait(reduced ? 1200 : 2600);
-  } else {
-    caption(`Today is ${fmt(today, { weekday: 'long', day: 'numeric', month: 'long' })}. Your birthday was ${lateText} ago.`);
-    await wait(reduced ? 900 : 2300);
-    caption("I'm late. So I'm rewinding time.");
-    await wait(reduced ? 300 : 700);
-    const dur = reduced ? 500 : Math.min(4400, 2200 + daysLate * 140);
-    rw.classList.add('rolling');
-    Sound.whoosh(dur / 1000 + .3);
-    await new Promise(done => {
-      const t0 = performance.now(); let lastOff = -1;
-      (function step(now) {
-        const t = Math.min(1, (now - t0) / dur);
-        const e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        const off = Math.round(e * daysLate);
-        if (off !== lastOff) {
-          lastOff = off;
-          const d = new Date(today); d.setDate(d.getDate() - off);
-          showDate(d); Sound.tick();
-        }
-        handM.setAttribute('transform', `rotate(${hands.m0 - e * 360 * daysLate * 2} 100 100)`);
-        handH.setAttribute('transform', `rotate(${hands.h0 - e * 360 * daysLate / 6} 100 100)`);
-        rwTc.textContent = timecode((1 - e) * daysLate * 86400);
-        if (t < 1) requestAnimationFrame(step); else done();
-      })(t0);
-    });
-    showDate(BDAY);
-    rw.classList.remove('rolling'); rw.classList.add('arrived');
-    caption(`There. ${fmt(BDAY, { weekday: 'long', day: 'numeric', month: 'long' })}. Right on time.`);
-    Sound.chime();
-    await wait(reduced ? 1200 : 2400);
-  }
+  const day = d => fmt(d, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  caption(`${day(BDAY)}. Eighteen years ago tonight, something wonderful happened.`);
+  await wait(reduced ? 1200 : 2600);
+  caption("Let's go back and see.");
+  await wait(reduced ? 300 : 800);
+  await roll(hands, BDAY.getFullYear(), BORN.getFullYear(), reduced ? 500 : 3400);
+  arrive();
+  caption(`${day(BORN)}. A new moon, and then you.`);
+  await wait(reduced ? 1400 : 3000);
+  tapeMode(true);
+  caption('Eighteen trips around the Sun later…');
+  await wait(reduced ? 300 : 600);
+  await roll(hands, BORN.getFullYear(), BDAY.getFullYear(), reduced ? 500 : 2400);
+  arrive();
+  caption(`${day(BDAY)}. Happy birthday, Nokutenda.`);
+  await wait(reduced ? 1200 : 2400);
   if (beforeFade) beforeFade();
   rw.classList.add('out');
   await wait(850);
@@ -1088,7 +1095,7 @@ $('#replay').addEventListener('click', async e => {
   update(); setInterval(update, 100);
 })();
 
-/* ---------------- 21 wishes ---------------- */
+/* ---------------- 18 wishes ---------------- */
 const WISHES = [
   'That eighteen feels like the start of something big.',
   'Slow mornings, and evenings that end with you laughing.',
@@ -1175,7 +1182,7 @@ const WISHES = [
     d.style.height = ((1 - edge * .6) * (35 + dr() * 65)).toFixed(0) + '%';
     drips.appendChild(d);
   }
-  // 21 candles: an outer ring of 13 and an inner ring of 8 on the top ellipse
+  // 18 candles: an outer ring of 11 and an inner ring of 7 on the top ellipse
   const spots = [];
   for (let i = 0; i < 11; i++) { const a = i / 11 * Math.PI * 2 + .2; spots.push([Math.cos(a) * .8, Math.sin(a) * .8]); }
   for (let i = 0; i < 7; i++) { const a = i / 7 * Math.PI * 2 + .4; spots.push([Math.cos(a) * .42, Math.sin(a) * .42]); }
